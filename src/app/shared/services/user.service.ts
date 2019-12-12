@@ -9,6 +9,9 @@ import { catchError, tap, map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class UserService {
+  deleteUsers() {
+    throw new Error("Method not implemented.");
+  }
 
   constructor(private http: HttpClient) { }
 
@@ -31,6 +34,22 @@ export class UserService {
       catchError(this.handleError('addHero', user))
     );
   }
+
+  deleteUserById(id: number) {
+    return this.http.post<any>(`${environment.apiUrl}/user/${id}`,id)
+    .pipe(
+      catchError(this.handleError('deleteUsers'))
+    );
+  }
+
+  updateUserById(id: number, userdetail: any) {
+    var url = `${environment.apiUrl}/users/${id}`;
+    return this.http.post<any>(url, userdetail)
+    .pipe(
+      catchError(this.handleError('updateUsers'))
+    );
+  }
+  
   private handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {
 
